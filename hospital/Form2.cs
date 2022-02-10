@@ -17,6 +17,7 @@ namespace hospitalGUI
             InitializeComponent();
         }
 
+        // saves index and passes it to form1
         private void indexButton_Click(object sender, EventArgs e)
         {
             int index = int.Parse(index_txt.Text) - 1;

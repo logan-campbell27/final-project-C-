@@ -18,7 +18,7 @@ namespace hospitalGUI
 
         public int index { get; set; }
 
-        //constructor
+        //default constructor
         public Surgery()
         {
             surgeryName = "name";
@@ -29,6 +29,7 @@ namespace hospitalGUI
             available = true;
 
         }
+        // overloaded constructor
         public Surgery(string surgeryName, string surgeon, string result, float cost, float risk, bool available, int index)
         {
             this.surgeryName = surgeryName;

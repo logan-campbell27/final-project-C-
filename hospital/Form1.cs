@@ -25,20 +25,23 @@ namespace hospitalGUI
             
 
         }
-
+        // running list of surgeries
         static List<Surgery> sList = new List<Surgery>();
 
+        // running index counter and save boolean
         int indexCount;
         bool saveClicked = false;
 
+        // new inventory object
         Inventory newInventory = new Inventory(sList);
 
 
       
-
+        // keeps track of current indexes
         static List<int> indexList = new List<int>();
 
 
+        // used to run form2
         internal void receiveData(int index)
         {
             if(index < 0 || index > sList.Count() - 1)
@@ -85,6 +88,8 @@ namespace hospitalGUI
         // edit button
         private void button3_Click(object sender, EventArgs e)
         {
+
+            //create a new surgery
             Surgery s = makeSurgery();
 
             if (listBox1.SelectedIndex == -1)
@@ -93,10 +98,11 @@ namespace hospitalGUI
             }
             else
             {
+                // delete selected surgery
                 newInventory.deleteItem(listBox1.SelectedIndex);
                 
             }
-
+            //add new surgery
             newInventory.addSurgery(s);
 
             bs.ResetBindings(false);
@@ -122,6 +128,7 @@ namespace hospitalGUI
 
 
         }
+
         //search button
         private void button5_Click(object sender, EventArgs e)
         {
@@ -194,13 +201,16 @@ namespace hospitalGUI
 
         // load inventory
         private void button8_Click(object sender, EventArgs e)
-        {
+        {  
+            // uses running boolean checker to prevent uploading inventory mulitple times
             if (saveClicked)
             {
                 MessageBox.Show("Error: Cannot Load Saved Inventory Until Application is Restarted");
             }
+            
             else
             {
+                // opens the save file
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -208,9 +218,11 @@ namespace hospitalGUI
                     string[] inventoryList = File.ReadAllLines(filePath);
                     foreach (String s in inventoryList)
                     {
+                        // splits surgery items
                         string[] delimeters = { "Surgery name: ", " Surgeon: ", " Result: ", " Cost: $", " Risk: ", "% chance of survival This Surgery is: ", "ID humber: " };
                         string[] items = s.Split(delimeters, StringSplitOptions.None);
 
+                        // changes cost risk available and id data types
                         float cost = float.Parse(items[4]);
                         float risk = float.Parse(items[5]);
                         bool b = true;
@@ -219,14 +231,17 @@ namespace hospitalGUI
                             b = false;
                         }
                         int ID = int.Parse(items[7]);
+                        // creates new surgery with previous variables
                         Surgery surgery = new Surgery(items[1], items[2], items[3], cost, risk, b, ID);
                         newInventory.addSurgery(surgery);
 
                     }
 
                 }
+                // reset bindings
                 bs.ResetBindings(false);
 
+                // clears the file
                 List<string> outContents = new List<string>();
                 outContents.Clear();
                 string outFile = @"C:\demos\inventory.txt";
@@ -234,6 +249,8 @@ namespace hospitalGUI
                 File.WriteAllLines(outFile, outContents);
             }
         }
+
+        // used to create surgery using form1 text entered and checks for valid values
         private Surgery makeSurgery()
         {
             String surgName = surgeryName_txt.Text;
